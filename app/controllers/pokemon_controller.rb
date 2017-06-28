@@ -26,17 +26,17 @@ class PokemonController < ApplicationController
     res = Typhoeus.get("http://pokeapi.co/api/v2/pokemon/#{params[:id]}", followlocation: true)
     body = JSON.parse(res.body)
 
-    res_gif = Typhoeus.get("https://api.giphy.com/v1/gifs/search?api_key=#{ENV["GIPHY_KEY"]}&q=pikachu&rating=g", followlocation: true)
+    res_gif = Typhoeus.get("https://api.giphy.com/v1/gifs/search?api_key=e88efbbc221045eb9d13886387959539&q=#{params[:id]}&rating=g", followlocation: true)
     body_gif = JSON.parse(res_gif.body)
 
     render json:
-      {
-          "id":body["id"],
-          "name":body["name"],
-          "types":
-           body["types"].map do |type_hash|
-             type_hash["type"]["name"]
-           end
+       { url: body_gif["data"][0]["embed_url"] ,
+        "id":body["id"],
+        "name":body["name"],
+        "types":
+         body["types"].map do |type_hash|
+           type_hash["type"]["name"]
+         end
       }
   end
 
